@@ -1,10 +1,10 @@
 const puppeteer = require('puppeteer')
+const WebSocketServer = require('ws').Server
 
-var data = []
+const wss = new WebSocketServer({ port: 5000 })
 
-var WebSocketServer = require('ws').Server
-var wss = new WebSocketServer({ port: 5000 })
 var wsList = []
+var data = []
 
 wss.on('connection', ws => {
   wsList.push(ws)
@@ -54,16 +54,16 @@ let scrape = async () => {
           let elements = document.querySelectorAll('.event')
           let newData = []
 
-          for (var element of elements) { // Проходимся в цикле по каждому ивенту
+          for (const element of elements) {
             let title = element.querySelector('.event-title')
             let eventData = element.querySelectorAll('.event-dataset')
             let formData = []
 
-            for (var event of eventData) {
+            for (const event of eventData) {
               let eventDataset = []
               let setData = event.querySelectorAll('.dataset-value')
 
-              for (var set of setData) {
+              for (const set of setData) {
                 if (parseInt(set.innerText) !== null) {
                   eventDataset.push(parseInt(set.innerText))
                 } else {
